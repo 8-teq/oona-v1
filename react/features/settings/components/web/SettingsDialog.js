@@ -80,6 +80,7 @@ class SettingsDialog extends Component<Props> {
         const tabs = _tabs.map(tab => {
             return {
                 ...tab,
+
                 onMount: tab.onMount
                     ? (...args) => dispatch(tab.onMount(...args))
                     : undefined,

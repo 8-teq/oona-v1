@@ -172,6 +172,7 @@ class WelcomePage extends AbstractWelcomePage {
      */
     render() {
         const { _moderatedRoomServiceUrl, t } = this.props;
+        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
@@ -182,7 +183,7 @@ class WelcomePage extends AbstractWelcomePage {
                     ? 'with-content' : 'without-content'}` }
                 id = 'welcome_page'>
                 <div className = 'welcome-watermark'>
-                    <Watermarks defaultJitsiLogoURL = 'images/oona.svg' />
+                    <Watermarks defaultJitsiLogoURL = { DEFAULT_WELCOME_PAGE_LOGO_URL } />
                 </div>
 
                 <div className = 'header'>
@@ -198,6 +199,48 @@ class WelcomePage extends AbstractWelcomePage {
                     </div>
                     <div className = 'header-image' />
                     <div className = 'header-container'>
+                        <h1 className = 'header-text-title'>
+                            { 'Oona Meet' }
+                        </h1>
+                        <span className = 'header-text-subtitle'>
+                            { t('welcomepage.headerSubtitle')}
+                        </span>
+                        <div id = 'enter_room'>
+                            <div className = 'enter-room-input-container'>
+                                <form onSubmit = { this._onFormSubmit }>
+                                    <input
+                                        aria-disabled = 'false'
+                                        aria-label = 'Meeting name input'
+                                        autoFocus = { true }
+                                        className = 'enter-room-input'
+                                        id = 'enter_room_field'
+                                        onChange = { this._onRoomChange }
+                                        pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
+                                        placeholder = { this.state.roomPlaceholder }
+                                        ref = { this._setRoomInputRef }
+                                        title = { t('welcomepage.roomNameAllowedChars') }
+                                        type = 'text'
+                                        value = { this.state.room } />
+                                    <div
+                                        className = { _moderatedRoomServiceUrl
+                                            ? 'warning-with-link'
+                                            : 'warning-without-link' }>
+                                        { this._renderInsecureRoomNameWarning() }
+                                    </div>
+                                </form>
+                            </div>
+                            <button
+                                aria-disabled = 'false'
+                                aria-label = 'Start meeting'
+                                className = 'welcome-page-button'
+                                id = 'enter_room_button'
+                                onClick = { this._onFormSubmit }
+                                tabIndex = '0'
+                                type = 'button'>
+                                { t('welcomepage.startMeeting') }
+                            </button>
+                        </div>
+
                         { _moderatedRoomServiceUrl && (
                             <div id = 'moderated-meetings'>
                                 <p>
@@ -212,18 +255,14 @@ class WelcomePage extends AbstractWelcomePage {
 
                 <div className = 'welcome-cards-container'>
                     <div className = 'welcome-card-row'>
-                        <div className = 'welcome-card-row-text'>
-                            <div className = 'welcome-card-row-text-main'>
-                                <p>Start or join a video meeting on the go</p>
-                            </div>
-                            <div className = 'welcome-card-row-text-sub'>
-                                <p>Oona gives you simplified video conferencing capabilities across multiple devices. Oona offers unparalleled security for your meetings with our enhanced encryption protocols. Our video client offers support for upto 1000 simultaneous connections.</p></div>
+                        <div className = 'welcome-tabs welcome-card welcome-card--blue'>
+                            { this._renderTabs() }
                         </div>
-                        <div className = 'welcome-card-row-img'>
-                            <img
-                                alt = ''
-                                src = 'images/home.svg' />
-                        </div>
+                        { showAdditionalCard
+                            ? <div
+                                className = 'welcome-card welcome-card--dark'
+                                ref = { this._setAdditionalCardRef } />
+                            : null }
                     </div>
 
                     { showAdditionalContent
@@ -232,43 +271,7 @@ class WelcomePage extends AbstractWelcomePage {
                             ref = { this._setAdditionalContentRef } />
                         : null }
                 </div>
-                <div className = 'welcome-start-button'>
-                    <div id = 'enter_room'>
-                        <button
-                            aria-disabled = 'false'
-                            aria-label = 'Start meeting'
-                            className = 'welcome-page-button'
-                            id = 'enter_room_button'
-                            onClick = { this._onFormSubmit }
-                            tabIndex = '0'
-                            type = 'button'>
-                            { 'Start a Meeting' }
-                        </button>
-                        <div className = 'enter-room-input-container'>
-                            <form onSubmit = { this._onFormSubmit }>
-                                <input
-                                    aria-disabled = 'false'
-                                    aria-label = 'Meeting name input'
-                                    autoFocus = { true }
-                                    className = 'enter-room-input'
-                                    id = 'enter_room_field'
-                                    onChange = { this._onRoomChange }
-                                    pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
-                                    placeholder = { 'Meeting Name' }
-                                    ref = { this._setRoomInputRef }
-                                    title = { 'Oona' }
-                                    type = 'text'
-                                    value = { this.state.room } />
-                                <div
-                                    className = { _moderatedRoomServiceUrl
-                                        ? 'warning-with-link'
-                                        : 'warning-without-link' }>
-                                    { this._renderInsecureRoomNameWarning() }
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>
 
         );

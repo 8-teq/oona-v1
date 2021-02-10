@@ -113,8 +113,8 @@ form {
     display: block;
     position: absolute;
     top: 15;
-    width: $watermarkWidth;
-    height: $watermarkHeight;
+    width: 185px;
+    height: 84px;
     background-size: contain;
     background-repeat: no-repeat;
     z-index: $zindex2;
@@ -193,4 +193,12 @@ form {
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, .5);
     border-radius: 4px;
+}
+
+
+//New UI
+
+.main-welcome-page {
+    height: 100%;
+    width: 100%;
 }

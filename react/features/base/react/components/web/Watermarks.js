@@ -165,8 +165,8 @@ class Watermarks extends Component<Props, State> {
         if (_showJitsiWatermark) {
             const style = {
                 backgroundImage: `url(${_logoUrl})`,
-                maxWidth: 140,
-                maxHeight: 70
+                maxWidth: 185,
+                maxHeight: 84
             };
 
             reactElement = (<div
@@ -176,7 +176,7 @@ class Watermarks extends Component<Props, State> {
             if (_logoLink) {
                 reactElement = (
                     <a
-                        href = { _logoLink }
+                        href = { 'https://8teq.co.ke' }
                         target = '_new'>
                         { reactElement }
                     </a>
