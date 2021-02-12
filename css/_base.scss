@@ -7,7 +7,6 @@
     -webkit-user-select: none;
     user-select: none;
 }
-
 input,
 textarea {
     -webkit-user-select: text;
@@ -121,8 +120,8 @@ form {
 }
 
 .leftwatermark {
-    left: 32px;
-    top: 32px;
+    left: 14px;
+    top: 12px;
     background-position: center left;
     background-repeat: no-repeat;
     background-size: contain;

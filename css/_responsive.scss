@@ -68,7 +68,7 @@
     border-radius: 0;
 }
 
-@media only screen and (max-width: $verySmallScreen) {
+@media only screen and (max-width: 700px) {
     .welcome {
         display: block;
 
@@ -87,7 +87,7 @@
         }
 
         .header {
-            background-color: #002637;
+            background-color: #ffffff;
 
             #enter_room {
                 .enter-room-input-container {
@@ -101,6 +101,17 @@
             }
         }
 
+        .welcome-watermark .watermark.leftwatermark {
+            width: 125px;
+            top: 25px;
+            left: 15px;
+        }
+
+        .welcome-page-settings {
+            top: 54px;
+            right: 15px;
+        }
+
         .welcome-tabs {
             display: none;
         }
@@ -110,12 +121,50 @@
         }
 
         .welcome-cards-container {
-            padding: 0;
+            padding-top: 25px;
+        }
+
+        .welcome-card-row {
+            flex-direction: column;
+            padding: 0 15px;
+
+            .welcome-card-row-text {
+                width: 100%;
+
+                .welcome-card-row-text-main {
+                    width: 100%;
+                    font-size: 44px;
+                    line-height: 50px;
+                }
+
+                .welcome-card-row-text-sub {
+                    margin-top: 38px;
+                    width: 100%;
+                    font-size: 14px;
+                }
+            }
+
+            .welcome-card-row-img {
+                margin-top: 40px;
+                width: 100%;
+
+                img {
+                    margin-left: 0;
+                    width: 100%;
+                }
+            }
+
+        }
+
+        .welcome-start-button {
+            flex-direction: column;
+            padding: 25px 15px 0 30px;
+            height: 200px;
         }
 
         &.without-content {
             .header {
-            height: 100%;
+            height: 95px;
             }
         }
 
@@ -135,6 +184,7 @@
         }
     }
 }
+
 
 .desktop-browser {
     @media only screen and (max-width: $smallScreen) {

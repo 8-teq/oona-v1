@@ -132,7 +132,7 @@ class DeepLinkingMobilePage extends Component<Props> {
                             : null
                     }
                     <p className = { `${_SNS}__text` }>
-                        { t(`${_TNS}.appNotInstalled`, { app: NATIVE_APP_NAME }) }
+                        { 'You need the Oona mobile app to join this meeting on your phone.'}
                     </p>
                     <p className = { `${_SNS}__text` }>
                         { t(`${_TNS}.ifHaveApp`) }
@@ -140,7 +140,7 @@ class DeepLinkingMobilePage extends Component<Props> {
                     <a
                         { ...onOpenLinkProperties }
                         className = { `${_SNS}__href` }
-                        href = { generateDeepLinkingURL() }
+                        href = { '' }
                         onClick = { this._onOpenApp }
                         target = '_top'>
                         <button className = { `${_SNS}__button ${_SNS}__button_primary` }>
@@ -150,15 +150,6 @@ class DeepLinkingMobilePage extends Component<Props> {
                     <p className = { `${_SNS}__text` }>
                         { t(`${_TNS}.ifDoNotHaveApp`) }
                     </p>
-                    <a
-                        { ...onOpenLinkProperties }
-                        href = { this._generateDownloadURL() }
-                        onClick = { this._onDownloadApp }
-                        target = '_top'>
-                        <button className = { downloadButtonClassName }>
-                            { t(`${_TNS}.downloadApp`) }
-                        </button>
-                    </a>
                     {
                         isSupportedMobileBrowser()
                             && <a
