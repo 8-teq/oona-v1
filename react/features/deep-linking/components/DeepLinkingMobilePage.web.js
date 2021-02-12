@@ -161,10 +161,6 @@ class DeepLinkingMobilePage extends Component<Props> {
                             </a>
                     }
                     { renderPromotionalFooter() }
-                    <DialInSummary
-                        className = 'deep-linking-dial-in'
-                        clickableNumbers = { true }
-                        room = { _room } />
                 </div>
             </div>
         );
