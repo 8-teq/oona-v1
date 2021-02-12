@@ -1,14 +1,14 @@
 {
-  "android_package_name": "org.jitsi.meet",
+  "android_package_name": "oona.ke",
   "prefer_related_applications": true,
   "related_applications": [
     {
-      "id": "org.jitsi.meet",
+      "id": "oona.ke",
       "platform": "chromeos_play"
     }
   ],
   "short_name": "Jitsi Meet",
-  "name": "Jitsi Meet",
+  "name": "Oona",
   "icons": [
     {
       "src": "static/pwa/icons/icon192.png",
@@ -28,9 +28,8 @@
     }
   ],
   "start_url": "/",
-  "background_color": "#17A0DB",
+  "background_color": "#FFFFFF",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#17A0DB"
+  "theme_color": "#FFFFFF"
  }
- 
