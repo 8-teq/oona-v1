@@ -125,7 +125,7 @@ body.welcome-page {
         color: $welcomePageDescriptionColor;
         padding: 4px;
         position: absolute;
-        top: 86px;
+        top: 70px;
         right: 64px;
         z-index: $zindex2;
 
@@ -144,7 +144,7 @@ body.welcome-page {
             width: 185px;
             height: 84px;
             left: 64px;
-            top: 64px;
+            top: 35px;
 
         }
     }
@@ -159,7 +159,7 @@ body.welcome-page {
     .welcome-cards-container {
         height: auto;
         color:#131519;
-        padding-top: 68px;
+        padding-top: 20px;
         margin-top: 32px;
         margin-bottom: 40px;
     }
