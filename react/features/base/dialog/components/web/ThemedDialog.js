@@ -6,12 +6,12 @@ import {
     PositionerAbsolute,
     PositionerRelative
 } from '@atlaskit/modal-dialog/dist/es2019/styled/Modal.js';
-import { NO, DN50 } from '@atlaskit/theme/colors';
+import { N0, DN50 } from '@atlaskit/theme/colors';
 import { themed } from '@atlaskit/theme/components';
 import React from 'react';
 
 const ThemedDialog = props => {
-    const style = { backgroundColor: props.isChromeless ? 'transparent' : themed({ light: NO,
+    const style = { backgroundColor: props.isChromeless ? 'transparent' : themed({ light: N0,
         dark: DN50 })({ theme: { mode: 'dark' } }) };
 
     return (<Dialog
