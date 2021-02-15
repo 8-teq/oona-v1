@@ -12,13 +12,13 @@ import React from 'react';
 
 const ThemedDialog = props => {
     const style = { backgroundColor: props.isChromeless ? 'transparent' : themed({ light: N0,
-        dark: DN50 })({ theme: { mode: 'light' } }) };
+        dark: DN50 })({ theme: { mode: 'dark' } }) };
 
     return (<Dialog
         { ...props }
         aria-modal = { true }
         style = { style }
-        theme = {{ mode: 'light' }} />);
+        theme = {{ mode: 'dark' }} />);
 };
 
 
