@@ -171,6 +171,7 @@ body.welcome-page {
         .welcome-card-row-text {
             font-family: Poppins, sans-serif;
             width: 45%;
+            margin-left: 50px;
             display: flex;
             flex-direction: column;
             .welcome-card-row-text-main{
@@ -178,13 +179,13 @@ body.welcome-page {
                 color: #051EC4;
                 font-size: 70px;
                 font-weight: 700;
-                line-height: 75px;
+                line-height: 70px;
             }
             .welcome-card-row-text-sub {
                 margin-top: 25px;
                 width: 90%;
                 color: #696871;
-                font-size: 20px;
+                font-size: 17px;
                 font-weight: 500;
             }
         }
@@ -224,8 +225,9 @@ body.welcome-page {
     }
 
     .welcome-start-button {
+        margin-top: -100px;
         margin-bottom: auto;
-        padding: 25px 68px 0 68px;
+        padding: 25px 68px 0 118px;
         z-index: 499;
 
         #enter_room {

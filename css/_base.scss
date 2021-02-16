@@ -1,12 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 /**
  * Safari will limit input in input elements to one character when user-select
  * none is applied. Other browsers already support selecting within inputs while
  * user-select is none. As such, disallow user-select except on inputs.
  */
-*
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-
-{
+* {
     -webkit-user-select: none;
     user-select: none;
 }

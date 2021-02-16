@@ -39,7 +39,7 @@ server {
     ssl_certificate /etc/jitsi/meet/jitsi-meet.example.com.crt;
     ssl_certificate_key /etc/jitsi/meet/jitsi-meet.example.com.key;
 
-    root /usr/share/jitsi-meet;
+    root /home/brian/projects/jitsi/jitsi-meet;
 
     # ssi on with javascript for multidomain variables in config.js
     ssi on;

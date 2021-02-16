@@ -2,7 +2,7 @@
 .*.tmp
 deploy-local.sh
 libs/
-all.css
+css/all.css
 *css.map
 .remote-sync.json
 .sync-config.cson
