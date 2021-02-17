@@ -14,8 +14,8 @@
     }
 
     &-header {
-        font-size: 19px;
-        line-height: 28px;
+        font-size: 13px;
+        line-height: 25px;
         margin: 24px 0 16px 0;
     }
 
@@ -98,11 +98,11 @@
                     border-radius: 4px;
                     cursor: pointer;
                 }
-    
+
                 &:hover > div:hover {
                     background-color: rgba(255, 255, 255, 0.2);
                 }
-    
+
                 & > :not(:last-child) {
                     margin-right: 16px;
                 }
