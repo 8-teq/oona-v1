@@ -125,8 +125,8 @@ body.welcome-page {
         color: $welcomePageDescriptionColor;
         padding: 4px;
         position: absolute;
-        top: 70px;
-        right: 64px;
+        top: 77px;
+        right: 130px;
         z-index: $zindex2;
 
         * {
@@ -143,8 +143,8 @@ body.welcome-page {
         .watermark.leftwatermark {
             width: 185px;
             height: 84px;
-            left: 64px;
-            top: 35px;
+            left: 130px;
+            top: 55px;
 
         }
     }
@@ -157,21 +157,22 @@ body.welcome-page {
     }
 
     .welcome-cards-container {
-        height: 500px;
+        height: 600px;
         color:#131519;
         padding-top: 20px;
-        margin-top: 32px;
+        margin-top: 0;
         margin-bottom: 40px;
     }
 
     .welcome-card-row {
+        height: 100%;
         display: flex;
         justify-content: center;
-        padding: 0 68px;
+        padding: 0 130px;
         .welcome-card-row-text {
+            padding-top: 40px;
             font-family: Poppins, sans-serif;
             width: 45%;
-            margin-left: 50px;
             display: flex;
             flex-direction: column;
             .welcome-card-row-text-main{
@@ -183,6 +184,7 @@ body.welcome-page {
             }
             .welcome-card-row-text-sub {
                 margin-top: 25px;
+                padding-top: 25px;
                 width: 90%;
                 color: #696871;
                 font-size: 17px;
@@ -192,8 +194,8 @@ body.welcome-page {
         .welcome-card-row-img {
             width: 55%;
             img {
-                margin-left: 10%;
-                height: 80%;
+                height: 100%;
+                padding-left: 6%;
             }
         }
     }
@@ -225,9 +227,9 @@ body.welcome-page {
     }
 
     .welcome-start-button {
-        margin-top: -100px;
+        margin-top: -180px;
         margin-bottom: auto;
-        padding: 25px 68px 0 118px;
+        padding: 25px 68px 0 130px;
         z-index: 499;
 
         #enter_room {
@@ -237,7 +239,7 @@ body.welcome-page {
             max-width: 600px;
             width: $welcomePageEnterRoomWidth;
             z-index: $zindex2;
-            background-color: #fff;
+            background-color: transparent;
             padding: $welcomePageEnterRoomPadding;
             border-radius: 4px;
             margin: 0;
