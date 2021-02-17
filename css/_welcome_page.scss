@@ -133,6 +133,11 @@ body.welcome-page {
             cursor: pointer;
             font-size: 32px;
         }
+        .jitsi-icon svg {
+            height: 30px;
+            width: 30px;
+            fill: white;
+        }
     }
 
     .welcome-watermark {
