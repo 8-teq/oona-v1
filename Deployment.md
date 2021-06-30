@@ -7,20 +7,14 @@ _Note_: Many of the installation steps require  `root`  or  `sudo`  access.
 
 ## Required packages and repository updates
 
-You will need the following packages:
-
--   `gnupg2`
--   `nginx-full`
--   `sudo`  # only needed if you use sudo
-
 Make sure your system is up-to-date and required packages are installed:
 
 ```bash
 # Retrieve the latest package versions across all repositories
 apt update
 
-# Ensure support for apt repositories served via HTTPS
-apt install apt-transport-https
+# Ensure support for apt repositories served via HTTPS and install the required packages
+apt install apt-transport-https gnupg2 nginx-full
 
 ```
 
@@ -78,23 +72,6 @@ Check the firewall status with:
 sudo ufw status verbose
 
 ```
-### TLS Certificate
-
-In order to have encrypted communications, you need a  [TLS certificate](https://en.wikipedia.org/wiki/Transport_Layer_Security).
-
-During installation of Jitsi Meet you can choose between different options:
-
-1.  The recommended option is to choose  **_Generate a new self-signed certificate_**  and create a Lets-Encrypt Certificate later (this will replace the self-signed certificate).
-    
-2.  But if you want to use a different certificate or you want to choose a different challenge type of Let's Encrypt, you should create that certificate first and then install jitsi-meet and choose  **_I want to use my own certificate_**.
-    
-3.  You could also use the self-signed certificate but this is not recommended for the following reasons:
-    
-    -   Using a self-signed certificate will result in warnings being shown in your users browsers, because they cannot verify your server's identity.
-        
-    -   Jitsi Meet mobile apps  _require_  a valid certificate signed by a trusted  [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)  and will not be able to connect to your server if you choose a self-signed certificate.
-    - In the event you still want to use a self signed certificate then check out [How To Create a Self-Signed SSL Certificate for Nginx in Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-18-04) to generate the ssl_certificate and ssl_certificate_key
-        
 
 ### Install Jitsi Meet
 
@@ -104,15 +81,41 @@ sudo apt install jitsi-meet
 
 ```
 
-**SSL/TLS certificate generation:**  You will be asked about SSL/TLS certificate generation. See above for details.
+**SSL/TLS certificate generation:**  You will be asked about SSL/TLS certificate generation. See below for details.
+
+### TLS Certificate
+
+In order to have encrypted communications, you need a  [TLS certificate](https://en.wikipedia.org/wiki/Transport_Layer_Security).
+
+During installation of Jitsi Meet you can choose between different options:
+
+1.  The recommended option is to choose  **_Generate a new self-signed certificate_**  and create a Lets-Encrypt Certificate after installation (this will replace the self-signed certificate). Run the command (it will also need further details during creation of the certificate)
+	```bash
+	. /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
+	
+	```
+2.  You could also use the self-signed certificate but this is not recommended for the following reasons:
+    
+    -   Using a self-signed certificate will result in warnings being shown in your users browsers, because they cannot verify your server's identity.
+        
+    -   Jitsi Meet mobile apps  _require_  a valid certificate signed by a trusted  [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)  and will not be able to connect to your server if you choose a self-signed certificate.
+    - In the event you still want to use a self signed certificate then follow the steps to generate the ssl_certificate and ssl_certificate_key
+        ```bash
+      sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+      
+	     ```
+	     - This command will ask for more details while generating the key and certificate
+
 
 ### Switching from Jitsi Meet to custom Oona v1
 
-Upload the Oona application zip file onto the server and extract it in your preferred directory(in this case it will be /home/).
+Clone the repository into your preferred directory(in this case it will be /home/). Then run the make command to package the application
 
 ```bash
-# After copying the zip file to get the oona file
-unzip oona.zip
+# Clone the repository
+git clone http://192.168.0.73/Maina/jitsi-server.git
+cd jitsi-server
+make
 
 ```
 Move to the sites-available folder in the nginx folder and access the nginx conf for Jitsi application we set up earlier.
@@ -123,7 +126,7 @@ nano oona-app.conf
 
 ```
 Within the file:
-- Replace all instances of **/usr/share/jitsi-meet** with **/home/oona**
+- Replace all instances of **/usr/share/jitsi-meet** with **/home/jitsi-server**
 - In case you selected the **_I want to use my own certificate_** option then edit the ssl_certificate and ssl_certificate_key section and add the path to both files.
 
 After check that Nginx configurations are okay then restart the server
@@ -135,3 +138,4 @@ sudo nginx -t
 systemctl restart nginx.service
 
 ```
+
