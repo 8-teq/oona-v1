@@ -1,12 +1,46 @@
+echo 'Installer Configuration setup'
+
+echo Hello, who am I talking to?
+read varname
+echo It\'s nice to meet you $varname
+
+
+
+
+
 
 echo 'Server update and upgrade ....'
 sudo apt update -y
 sudo apt upgrade -y 
 
 echo 'Dependencies others install ....'
-sudo apt install -y gnupg2
-sudo apt install -y nginx-full
-sudo apt install -y apt-transport-https
+
+packages=(
+'gnupg2'
+'apt-transport-https'
+'gnupg2'
+'openssl'
+)
+
+#sudo apt install -y gnupg2
+#sudo apt install -y nginx-full
+#sudo apt install -y apt-transport-https
+
+for package in "${packages[@]}"
+do
+    sudo apt install -y "${package}"
+
+done
+#sudo apt install -y gnupg2
+#sudo apt install -y nginx-full
+#sudo apt install -y apt-transport-https
+
+for package in $packages
+do
+    sudo apt install package
+
+done
+
 
 sudo apt-add-repository universe
 
@@ -32,6 +66,11 @@ echo 'ufw status'
 sudo ufw status verbose
 
 echo 'generation cert'
+
+
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=KE/ST=London/L=Nairobi/O=8teq/OU=Cloud /CN=8teq"
+
 
 
 echo 'Installing jitsi meet ...'
