@@ -8,6 +8,9 @@ echo "Your Host name set to $hostName"
 
 rootFolder='oonaV1'
 
+github_gitlab='http://192.168.0.73/Maina/jitsi-server.git'
+#github_gitlab='https://github.com/8-teq/oona-v1.git'
+
 
 
 echo 'Server update and upgrade ....'
@@ -27,19 +30,12 @@ packages=(
 'npm'
 )
 
-#sudo apt install -y gnupg2
-#sudo apt install -y nginx-full
-#sudo apt install -y apt-transport-https
 
 for package in "${packages[@]}"
 do
     sudo apt install -y "${package}"
 
 done
-#sudo apt install -y gnupg2
-#sudo apt install -y nginx-full
-#sudo apt install -y apt-transport-https
-
 
 
 
@@ -68,9 +64,6 @@ sudo ufw status verbose
 
 echo 'Installing jitsi meet ...'
 
-
-#echo 'deb https://download.jitsi.org stable/' >> /etc/apt/sources.list.d/jitsi-stable.list
-#wget -qO -  https://download.jitsi.org/jitsi-key.gpg.key | sudo apt-key add -
 sudo curl https://download.jitsi.org/jitsi-key.gpg.key | sudo sh -c 'gpg --dearmor > /usr/share/keyrings/jitsi-keyring.gpg'
 echo 'deb [signed-by=/usr/share/keyrings/jitsi-keyring.gpg] https://download.jitsi.org stable/' | sudo tee /etc/apt/sources.list.d/jitsi-stable.list > /dev/null
 sudo apt update -y
@@ -80,7 +73,7 @@ sudo apt-get --option=Dpkg::Options::=--force-confold --option=Dpkg::options::=-
 
 
 echo 'Cloning project ...'
-sudo git clone http://192.168.0.73/Maina/jitsi-server.git /usr/share/$rootFolder
+sudo git clone $github_gitlab /usr/share/$rootFolder
 cd /usr/share/$rootFolder
 sudo npm install
 sudo make
@@ -117,7 +110,7 @@ server {
         return 404;
     }
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://\$host\$request_uri;
     }
 }
 server {
@@ -135,10 +128,10 @@ server {
     ssl_session_tickets off;
 
     add_header Strict-Transport-Security "max-age=63072000" always;
-    set $prefix "";
+    set \$prefix "";
 
-    ssl_certificate /etc/jitsi/meet/$hostName.com.crt;
-    ssl_certificate_key /etc/jitsi/meet/$hostName.com.key;
+    ssl_certificate /etc/jitsi/meet/$hostName.crt;
+    ssl_certificate_key /etc/jitsi/meet/$hostName.key;
 
     root /usr/share/$rootFolder;
 
@@ -156,47 +149,47 @@ server {
     gzip_min_length 512;
 
     location = /config.js {
-        alias /etc/jitsi/meet/$hostName.com-config.js;
+        alias /etc/jitsi/meet/$hostName-config.js;
     }
 
     location = /external_api.js {
-        alias /usr/share/jitsi-meet/libs/external_api.min.js;
+        alias /usr/share/$rootFolder/libs/external_api.min.js;
     }
 
     # ensure all static content can always be found first
     location ~ ^/(libs|css|static|images|fonts|lang|sounds|connection_optimization|.well-known)/(.*)$
     {
         add_header 'Access-Control-Allow-Origin' '*';
-        alias /usr/share/jitsi-meet/$1/$2;
+        alias /usr/share/$rootFolder/\$1/\$2;
 
         # cache all versioned files
-        if ($arg_v) {
+        if (\$arg_v) {
             expires 1y;
         }
     }
 
     # BOSH
     location = /http-bind {
-        proxy_pass http://127.0.0.1:5280/http-bind?prefix=$prefix&$args;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $http_host;
+        proxy_pass http://127.0.0.1:5280/http-bind?prefix=\$prefix&\$args;
+        proxy_set_header X-Forwarded-For \$remote_addr;
+        proxy_set_header Host \$http_host;
     }
 
     # xmpp websockets
     location = /xmpp-websocket {
-        proxy_pass http://127.0.0.1:5280/xmpp-websocket?prefix=$prefix&$args;
+        proxy_pass http://127.0.0.1:5280/xmpp-websocket?prefix=\$prefix&\$args;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
-        proxy_set_header Host $http_host;
+        proxy_set_header Host \$http_host;
         tcp_nodelay on;
     }
 
     # colibri (JVB) websockets for jvb1
     location ~ ^/colibri-ws/default-id/(.*) {
-        proxy_pass http://127.0.0.1:9090/colibri-ws/default-id/$1$is_args$args;
+        proxy_pass http://127.0.0.1:9090/colibri-ws/default-id/\$1\$is_args\$args;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
         tcp_nodelay on;
     }
@@ -207,11 +200,11 @@ server {
     #}
     #location ~ ^/_load-test/libs/(.*)$ {
     #    add_header 'Access-Control-Allow-Origin' '*';
-    #    alias /usr/share/jitsi-meet/load-test/libs/$1;
+    #    alias /usr/share/$rootFolder/load-test/libs/\$1;
     #}
 
     location ~ ^/([^/?&:'"]+)$ {
-        try_files $uri @root_path;
+        try_files \$uri @root_path;
     }
 
     location @root_path {
@@ -220,35 +213,35 @@ server {
 
     location ~ ^/([^/?&:'"]+)/config.js$
     {
-        set $subdomain "$1.";
-        set $subdir "$1/";
+        set \$subdomain "\$1.";
+        set \$subdir "\$1/";
 
-        alias /etc/jitsi/meet/$hostName.com-config.js;
+        alias /etc/jitsi/meet/$hostName-config.js;
     }
 
     # BOSH for subdomains
     location ~ ^/([^/?&:'"]+)/http-bind {
-        set $subdomain "$1.";
-        set $subdir "$1/";
-        set $prefix "$1";
+        set \$subdomain "\$1.";
+        set \$subdir "\$1/";
+        set \$prefix "\$1";
 
         rewrite ^/(.*)$ /http-bind;
     }
 
     # websockets for subdomains
     location ~ ^/([^/?&:'"]+)/xmpp-websocket {
-        set $subdomain "$1.";
-        set $subdir "$1/";
-        set $prefix "$1";
+        set \$subdomain "\$1.";
+        set \$subdir "\$1/";
+        set \$prefix "\$1";
 
         rewrite ^/(.*)$ /xmpp-websocket;
     }
 
     # Anything that didn't match above, and isn't a real file, assume it's a room name and redirect to /
     location ~ ^/([^/?&:'"]+)/(.*)$ {
-        set $subdomain "$1.";
-        set $subdir "$1/";
-        rewrite ^/([^/?&:'"]+)/(.*)$ /$2;
+        set \$subdomain "\$1.";
+        set \$subdir "\$1/";
+        rewrite ^/([^/?&:'"]+)/(.*)$ /\$2;
     }
 }
 EOF
