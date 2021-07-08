@@ -1,0 +1,96 @@
+---
+### Create service for jitsi-prosody
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: prosody-service
+spec:
+  ports:
+    - name: "5222-tcp"
+      port: 5222
+      targetPort: 5222
+    - name: "5280-tcp"
+      port: 5280
+      targetPort: 5280
+    - name: "5347-tcp"
+      port: 5347
+      targetPort: 5347
+  selector:
+    component: prosody
+---
+### Deployment for XMPP server (prosody)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prosody
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: prosody
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: prosody
+  template:
+    metadata:
+      labels:
+        component: prosody
+    spec:
+      containers:
+        - name: prosody
+          image: jitsi/prosody:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5222
+              protocol: TCP
+            - containerPort: 5269
+              protocol: TCP
+            - containerPort: 5280
+              protocol: TCP
+            - containerPort: 5347
+              protocol: TCP
+          env:
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: XMPP_RECORDER_DOMAIN
+              value: recorder.meet.jitsi
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: JVB_AUTH_PASSWORD
+              value: fb7768a502463790fbc8b69476bdc7fb
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              value: 0079928ad2978e65ced5393f56f586d1
+            - name: JIBRI_RECORDER_USER
+              value: recorder
+            - name: JIBRI_RECORDER_PASSWORD
+              value: edd6d1ffbcd2d168ef5ffe0a22381c86
+            - name: JIBRI_XMPP_USER
+              value: jibri
+            - name: JIBRI_XMPP_PASSWORD
+              value: 9469a9ada58de2c4377b886e0c927c7a
+            - name: JIGASI_XMPP_USER
+              value: jigasi
+            - name: JIGASI_XMPP_PASSWORD
+              value: a0a525e76e7e6903a199b61111f077b7
+            - name: TZ
+              value: Africa/Nairobi
+            - name: JVB_TCP_HARVESTER_DISABLED
+              value: "true"
+            - name: JICOFO_COMPONENT_SECRET
+              value: null
+
