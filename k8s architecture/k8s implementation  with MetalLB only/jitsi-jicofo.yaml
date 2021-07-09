@@ -1,0 +1,54 @@
+---
+### Deployment for Focus component (jicofo)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jicofo
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: jicofo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: jicofo
+  template:
+    metadata:
+      labels:
+        component: jicofo
+    spec:
+      containers:
+        - name: jicofo
+          image: jitsi/jicofo:latest
+          imagePullPolicy: Always
+          env:
+            - name: XMPP_SERVER
+              value: prosody
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              value: 0079928ad2978e65ced5393f56f586d1
+            - name: TZ
+              value: Africa/Nairobi
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            - name: JIGASI_BREWERY_MUC
+              value: jigasibrewery
+            - name: JIBRI_BREWERY_MUC
+              value: jibribrewery
+            - name: JIBRI_PENDING_TIMEOUT
+              value: '90'
+            - name: JICOFO_COMPONENT_SECRET
+              value: null
+
