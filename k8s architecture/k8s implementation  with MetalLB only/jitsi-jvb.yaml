@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: jvb-service
+spec:
+  ports:
+    - name: "4443-tcp"
+      port: 4443
+      targetPort: 4443
+  selector:
+    component: jvb
+---
+### Deployment for Video bridge (jvb)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jvb
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: jvb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: jvb
+  template:
+    metadata:
+      labels:
+        component: jvb
+    spec:
+      containers:
+        - name: jvb
+          image: jitsi/jvb:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4443
+              protocol: TCP
+            - name: proxy-udp-10000
+              containerPort: 10000
+              hostPort: 10000
+              protocol: UDP
+          env:
+            - name: XMPP_SERVER
+              value: prosody
+            - name: DOCKER_HOST_ADDRESS
+              value: 192.168.0.59
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JVB_STUN_SERVERS
+              value: meet-jit-si-turnrelay.jitsi.net:443
+            - name: JVB_TCP_HARVESTER_DISABLED
+              value: "true"
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: JVB_PORT
+              value: "10000"
+            - name: JVB_TCP_PORT
+              value: "4443"
+            - name: JVB_TCP_MAPPED_PORT
+              value: "4443"
+            - name: JVB_AUTH_PASSWORD
+              value: fb7768a502463790fbc8b69476bdc7fb
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            - name: TZ
+              value: Africa/Nairobi
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              value: 0079928ad2978e65ced5393f56f586d1
+
+            

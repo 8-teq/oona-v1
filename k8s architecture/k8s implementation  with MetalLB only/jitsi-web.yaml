@@ -1,0 +1,98 @@
+---
+### Creates jitsi-meet namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: jitsi-namespace
+---
+### Create service for jitsi-web
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: web-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "http"
+      port: 80
+      targetPort: 80
+    - name: "https"
+      port: 443
+      targetPort: 443
+  selector:
+    component: jitsi
+---
+### Deployment for jitsi-web
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jitsi
+  namespace: jitsi-meet
+  labels:
+    app: jitsi-meet
+    component: jitsi
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: jitsi
+  template:
+    metadata:
+      labels:
+        component: jitsi
+    spec:
+      containers:
+        - name: web
+          image: jitsi/web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
+          env:
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_BOSH_URL_BASE
+              value: http://prosody:5280
+            - name: XMPP_RECORDER_DOMAIN
+              value: recorder.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
+            - name: TZ
+              value: Africa/Nairobi
+            - name: XMPP_SERVER
+              value: prosody
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JVB_TCP_HARVESTER_DISABLED
+              value: "true"
+            - name: JIBRI_BREWERY_MUC
+              value: jibribrewery
+            - name: JIBRI_PENDING_TIMEOUT
+              value: '90'
+            - name: JIBRI_XMPP_USER
+              value: jibri
+            - name: JIBRI_XMPP_PASSWORD
+              value: 9469a9ada58de2c4377b886e0c927c7a
+            - name: JIBRI_RECORDER_USER
+              value: recorder
+            - name: JIBRI_RECORDER_PASSWORD
+              value: edd6d1ffbcd2d168ef5ffe0a22381c86
+            - name: ENABLE_XMPP_WEBSOCKET
+              value: '0'
+
+## Try ConfigMaps for volumes
