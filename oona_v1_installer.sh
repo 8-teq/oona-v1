@@ -1,7 +1,8 @@
+#!/bin/bash
 echo 'Installer Configuration setup...'
 
 
-echo "Enter Host name"
+echo "Enter Host name (Oona Host IP Address unless there is a valid domain name)"
 read hostName
 echo "Your Host name set to $hostName"
 
