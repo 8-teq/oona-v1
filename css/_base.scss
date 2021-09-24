@@ -1,4 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+@font-face {
+    font-family: Poppins;
+    src: local("Poppins"),
+    url(../fonts/Poppins-Regular.woff);
+    font-weight: 400;
+}
+@font-face {
+    font-family: Poppins;
+    src: local("Poppins"),
+    url(../fonts/Poppins-Bold.woff);
+    font-weight: 500;
+}
+@font-face {
+    font-family: Poppins;
+    src: local("Poppins"),
+    url(../fonts/Poppins-Bold.woff);
+    font-weight: 700;
+}
 /**
  * Safari will limit input in input elements to one character when user-select
  * none is applied. Other browsers already support selecting within inputs while
